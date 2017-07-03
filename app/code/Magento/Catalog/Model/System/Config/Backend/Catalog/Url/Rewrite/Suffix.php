@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -19,6 +19,10 @@ use Magento\UrlRewrite\Model\Storage\DbStorage;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 
 /**
+ * URL suffix backend model
+ *
+ * @api
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Suffix extends \Magento\Framework\App\Config\Value
@@ -41,9 +45,9 @@ class Suffix extends \Magento\Framework\App\Config\Value
     protected $resource;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopePool
+     * @var \Magento\Framework\App\Config
      */
-    private $scopePool;
+    private $appConfig;
 
     /**
      * @param \Magento\Framework\Model\Context $context
@@ -83,17 +87,17 @@ class Suffix extends \Magento\Framework\App\Config\Value
     /**
      * Get instance of ScopePool
      *
-     * @return \Magento\Framework\App\Config\ScopePool
+     * @return \Magento\Framework\App\Config
      * @deprecated
      */
-    private function getScopePool()
+    private function getAppConfig()
     {
-        if ($this->scopePool === null) {
-            $this->scopePool = \Magento\Framework\App\ObjectManager::getInstance()->get(
-                \Magento\Framework\App\Config\ScopePool::class
+        if ($this->appConfig === null) {
+            $this->appConfig = \Magento\Framework\App\ObjectManager::getInstance()->get(
+                \Magento\Framework\App\Config::class
             );
         }
-        return $this->scopePool;
+        return $this->appConfig;
     }
 
     /**
@@ -177,7 +181,7 @@ class Suffix extends \Magento\Framework\App\Config\Value
         if ($this->getValue() !== null) {
             $suffix = $this->getValue();
         } else {
-            $this->getScopePool()->clean();
+            $this->getAppConfig()->clean();
             $suffix = $this->_config->getValue($this->getPath());
         }
         foreach ($entities as $urlRewrite) {

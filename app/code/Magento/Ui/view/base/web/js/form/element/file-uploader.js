@@ -1,6 +1,10 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
+ */
+
+/**
+ * @api
  */
 define([
     'jquery',
@@ -18,6 +22,7 @@ define([
             value: [],
             maxFileSize: false,
             isMultipleFiles: false,
+            placeholderType: 'document', // 'image', 'video'
             allowedExtensions: false,
             previewTmpl: 'ui/form/element/uploader/preview',
             dropZone: '[data-role=drop-zone]',
@@ -158,6 +163,8 @@ define([
          * @returns {Object} Modified file object.
          */
         processFile: function (file) {
+            file.previewType = this.getFilePreviewType(file);
+
             this.observe.call(file, true, [
                 'previewWidth',
                 'previewHeight'
@@ -236,6 +243,24 @@ define([
         },
 
         /**
+         * Get simplified file type.
+         *
+         * @param {Object} file - File to be checked.
+         * @returns {String}
+         */
+        getFilePreviewType: function (file) {
+            var type;
+
+            if (!file.type) {
+                return 'document';
+            }
+
+            type = file.type.split('/')[0];
+
+            return type !== 'image' && type !== 'video' ? 'document' : type;
+        },
+
+        /**
          * Checks if size of provided file exceeds
          * defined in configuration size limits.
          *
@@ -305,7 +330,7 @@ define([
 
             if (allowed.passed) {
                 target.on('fileuploadsend', function (event, postData) {
-                    postData.data.set('param_name', this.paramName);
+                    postData.data.append('param_name', this.paramName);
                 }.bind(data));
 
                 target.fileupload('process', data).done(function () {
