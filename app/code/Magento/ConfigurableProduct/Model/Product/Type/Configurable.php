@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Model\Product\Type;
@@ -818,9 +818,15 @@ class Configurable extends \Magento\Catalog\Model\Product\Type\AbstractType
                         $value = $value->getSource()->getOptionText($attributeValue);
                     } else {
                         $value = '';
+                        $attributeValue = '';
                     }
 
-                    $attributes[] = ['label' => $label, 'value' => $value];
+                    $attributes[] = [
+                        'label' => $label,
+                        'value' => $value,
+                        'option_id' => $attributeId,
+                        'option_value' => $attributeValue,
+                    ];
                 }
             }
         }
@@ -1178,5 +1184,24 @@ class Configurable extends \Magento\Catalog\Model\Product\Type\AbstractType
             }
         }
         return parent::setImageFromChildProduct($product);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isPossibleBuyFromList($product)
+    {
+        $isAllCustomOptionsDisplayed = true;
+
+        foreach ($this->getConfigurableAttributes($product) as $attribute) {
+            $eavAttribute = $attribute->getProductAttribute();
+
+            $isAllCustomOptionsDisplayed = (
+                $isAllCustomOptionsDisplayed
+                && $eavAttribute->getData('used_in_product_listing')
+            );
+        }
+
+        return $isAllCustomOptionsDisplayed;
     }
 }

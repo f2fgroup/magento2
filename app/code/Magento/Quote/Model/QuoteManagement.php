@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -354,7 +354,7 @@ class QuoteManagement implements \Magento\Quote\Api\CartManagementInterface
         $order = $this->submit($quote);
 
         if (null == $order) {
-            throw new LocalizedException(__('Cannot place order.'));
+            throw new LocalizedException(__('Unable to place order. Please try again later.'));
         }
 
         $this->checkoutSession->setLastQuoteId($quote->getId());

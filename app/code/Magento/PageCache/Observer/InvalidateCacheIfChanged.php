@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\PageCache\Observer;
@@ -8,7 +8,9 @@ namespace Magento\PageCache\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
+ * Class InvalidateCacheIfChanged
  * An observer to invalidate full page cache when the content given is changed
+ * @deprecated
  */
 class InvalidateCacheIfChanged implements ObserverInterface
 {

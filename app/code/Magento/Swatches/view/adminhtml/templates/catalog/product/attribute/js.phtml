@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -117,14 +117,6 @@ require([
             if (isFilterableInSearch) {
                 isFilterableInSearch.disabled = true;
             }
-        }
-
-        if (frontendInput && !frontendInput.disabled
-            && (frontendInput.value=='swatch_text' || frontendInput.value=='swatch_visual')
-        ) {
-            $('used_in_product_listing').value = 1;
-            $('is_visible_on_front').value = 1;
-            $('update_product_preview_image').value = 1;
         }
 
         if (frontendInput && (frontendInput.value=='multiselect'

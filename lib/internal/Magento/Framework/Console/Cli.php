@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -21,6 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Cli extends SymfonyApplication
 {
+    /**
+     * Cli exit codes
+     */
+    const RETURN_SUCCESS = 0;
+    const RETURN_FAILURE = 1;
+
     /**
      * Name of input option
      */

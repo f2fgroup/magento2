@@ -1,5 +1,5 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 define([
@@ -93,7 +93,6 @@ define([
                 suggestContainer.removeClass('disabled').removeProp('disabled');
                 $('#inventory_qty').removeProp('disabled');
                 $('#inventory_stock_availability').prop('disabled', true);
-                this._setElementDisabled($('#quantity_and_stock_status'), true, false);
                 this._setElementDisabled($('#qty'), false, true);
             }
 

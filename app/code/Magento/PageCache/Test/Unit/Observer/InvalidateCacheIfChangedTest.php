@@ -1,11 +1,15 @@
 <?php
 /**
  *
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\PageCache\Test\Unit\Observer;
 
+/**
+ * Class InvalidateCacheIfChangedTest
+ * @deprecated 
+ */
 class InvalidateCacheIfChangedTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Magento\PageCache\Observer\InvalidateCacheIfChanged */

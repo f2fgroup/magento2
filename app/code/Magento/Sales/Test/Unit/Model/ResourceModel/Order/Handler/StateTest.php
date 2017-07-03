@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Test\Unit\Model\ResourceModel\Order\Handler;
@@ -73,9 +73,12 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function testCheckOrderEmpty()
     {
         $this->orderMock->expects($this->once())
-            ->method('getId')
-            ->will($this->returnValue(null));
-        $this->assertEquals($this->orderMock, $this->state->check($this->orderMock));
+            ->method('getBaseGrandTotal')
+            ->willReturn(100);
+        $this->orderMock->expects($this->never())
+            ->method('setState');
+
+        $this->state->check($this->orderMock);
     }
 
     /**
@@ -83,7 +86,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckSetStateComplete()
     {
-        $this->orderMock->expects($this->once())
+        $this->orderMock->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
         $this->orderMock->expects($this->once())
@@ -119,7 +122,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckSetStateClosed()
     {
-        $this->orderMock->expects($this->once())
+        $this->orderMock->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
         $this->orderMock->expects($this->once())
@@ -161,7 +164,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckSetStateProcessing()
     {
-        $this->orderMock->expects($this->once())
+        $this->orderMock->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
         $this->orderMock->expects($this->once())

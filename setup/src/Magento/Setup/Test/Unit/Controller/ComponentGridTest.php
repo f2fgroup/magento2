@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -170,9 +170,9 @@ class ComponentGridTest extends \PHPUnit_Framework_TestCase
             $this->composerInformationMock,
             $objectManagerProvider,
             $this->updatePackagesCacheMock,
-            $this->marketplaceManagerMock
+            $this->marketplaceManagerMock,
+            $timezoneProviderMock
         );
-        $this->controller->setTimezone($timezoneProviderMock->get());
     }
 
     public function testIndexAction()

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Model;
@@ -261,7 +261,11 @@ class Cart extends DataObject implements CartInterface
         if ($orderItem->getParentItem() === null) {
             $storeId = $this->_storeManager->getStore()->getId();
             try {
-                $product = $this->productRepository->getById($orderItem->getProductId(), false, $storeId);
+                /**
+                 * We need to reload product in this place, because products
+                 * with the same id may have different sets of order attributes.
+                 */
+                $product = $this->productRepository->getById($orderItem->getProductId(), false, $storeId, true);
             } catch (NoSuchEntityException $e) {
                 return $this;
             }
@@ -331,10 +335,6 @@ class Cart extends DataObject implements CartInterface
             );
         }
 
-        if (!$request->hasQty()) {
-            $request->setQty(1);
-        }
-
         $this->getRequestInfoFilter()->filter($request);
         return $request;
     }
@@ -360,7 +360,7 @@ class Cart extends DataObject implements CartInterface
             //If product was not found in cart and there is set minimal qty for it
             if ($minimumQty
                 && $minimumQty > 0
-                && $request->getQty() < $minimumQty
+                && !$request->getQty()
                 && !$this->getQuote()->hasProductId($productId)
             ) {
                 $request->setQty($minimumQty);
@@ -700,7 +700,7 @@ class Cart extends DataObject implements CartInterface
                 // If product was not found in cart and there is set minimal qty for it
                 if ($minimumQty
                     && $minimumQty > 0
-                    && $request->getQty() < $minimumQty
+                    && !$request->getQty()
                     && !$this->getQuote()->hasProductId($productId)
                 ) {
                     $request->setQty($minimumQty);

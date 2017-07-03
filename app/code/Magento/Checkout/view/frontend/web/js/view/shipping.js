@@ -1,5 +1,5 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*global define*/
@@ -69,8 +69,13 @@ define(
             quoteIsVirtual: quote.isVirtual(),
 
             initialize: function () {
-                var self = this;
+                var self = this,
+                    hasNewAddress,
+                    fieldsetName = 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset';
+
                 this._super();
+                shippingRatesValidator.initFields(fieldsetName);
+
                 if (!quote.isVirtual()) {
                     stepNavigator.registerStep(
                         'shipping',
@@ -82,7 +87,7 @@ define(
                 }
                 checkoutDataResolver.resolveShippingAddress();
 
-                var hasNewAddress = addressList.some(function (address) {
+                hasNewAddress = addressList.some(function (address) {
                     return address.getType() == 'new-customer-address';
                 });
 
@@ -94,7 +99,7 @@ define(
                     }
                 });
 
-                quote.shippingMethod.subscribe(function (value) {
+                quote.shippingMethod.subscribe(function () {
                     self.errorValidationMessage(false);
                 });
 
@@ -118,13 +123,7 @@ define(
                 //load data from server for shipping step
             },
 
-            initElement: function(element) {
-                if (element.index === 'shipping-address-fieldset') {
-                    shippingRatesValidator.bindChangeHandlers(element.elems(), false);
-                }
-            },
-
-            getPopUp: function() {
+            getPopUp: function () {
                 var self = this;
                 if (!popUp) {
                     var buttons = this.popUpForm.options.buttons;

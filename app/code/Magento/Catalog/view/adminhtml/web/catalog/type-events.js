@@ -1,11 +1,12 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 define([
     'jquery',
+    'uiRegistry',
     'Magento_Catalog/js/product/weight-handler'
-], function ($, weight) {
+], function ($, registry, weight) {
     'use strict';
 
     return {
@@ -30,6 +31,7 @@ define([
             this.type.current = this.$type.val();
 
             this.bindAll();
+            registry.set('typeSwitcher', this);
         },
 
         /**

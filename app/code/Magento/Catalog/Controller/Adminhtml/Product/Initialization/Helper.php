@@ -1,10 +1,14 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace Magento\Catalog\Controller\Adminhtml\Product\Initialization;
 
+/**
+ * Product initialization helper class
+ */
 class Helper
 {
     /**
@@ -71,7 +75,7 @@ class Helper
      */
     public function initialize(\Magento\Catalog\Model\Product $product)
     {
-        $productData = $this->request->getPost('product');
+        $productData = $this->request->getPost('product', []);
         unset($productData['custom_attributes']);
         unset($productData['extension_attributes']);
 
@@ -144,6 +148,13 @@ class Helper
                 $productData['options'],
                 $this->request->getPost('options_use_default')
             );
+            foreach ($options as &$customOptionData) {
+                if (isset($customOptionData['values'])) {
+                    $customOptionData['values'] = array_filter($customOptionData['values'], function ($valueData) {
+                        return !((!isset($valueData['option_type_id']) || $valueData['option_type_id'] == '-1') && !empty($valueData['is_delete']));
+                    });
+                }
+            }
             $product->setProductOptions($options);
         }
 

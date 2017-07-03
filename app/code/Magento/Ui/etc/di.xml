@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
@@ -182,6 +182,7 @@
                 <item name="string" xsi:type="object">Magento\Framework\Data\Argument\Interpreter\StringUtils</item>
                 <item name="null" xsi:type="object">Magento\Framework\Data\Argument\Interpreter\NullType</item>
                 <item name="url" xsi:type="object">Magento\Framework\View\Layout\Argument\Interpreter\Url</item>
+                <item name="const" xsi:type="object">Magento\Framework\Data\Argument\Interpreter\Constant</item>
             </argument>
             <argument name="discriminator" xsi:type="string">xsi:type</argument>
         </arguments>

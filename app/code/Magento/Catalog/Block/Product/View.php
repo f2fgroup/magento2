@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Product;
@@ -232,26 +232,28 @@ class View extends AbstractProduct implements \Magento\Framework\DataObject\Iden
         foreach ($tierPricesList as $tierPrice) {
             $tierPrices[] = $this->priceCurrency->convert($tierPrice['price']->getValue());
         }
+        $regularPriceAmount = $product->getPriceInfo()->getPrice('regular_price')->getAmount();
+        $finalPriceAmount = $product->getPriceInfo()->getPrice('final_price')->getAmount();
         $config = [
             'productId' => $product->getId(),
             'priceFormat' => $this->_localeFormat->getPriceFormat(),
             'prices' => [
                 'oldPrice' => [
-                    'amount' => $this->priceCurrency->convert(
-                        $product->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue()
-                    ),
+                    'amount' => $regularPriceAmount
+                        ? $this->priceCurrency->convert($regularPriceAmount->getValue())
+                        : null,
                     'adjustments' => []
                 ],
                 'basePrice' => [
-                    'amount' => $this->priceCurrency->convert(
-                        $product->getPriceInfo()->getPrice('final_price')->getAmount()->getBaseAmount()
-                    ),
+                    'amount' => $finalPriceAmount
+                        ? $this->priceCurrency->convert($finalPriceAmount->getBaseAmount())
+                        : null,
                     'adjustments' => []
                 ],
                 'finalPrice' => [
-                    'amount' => $this->priceCurrency->convert(
-                        $product->getPriceInfo()->getPrice('final_price')->getAmount()->getValue()
-                    ),
+                    'amount' => $finalPriceAmount
+                        ? $this->priceCurrency->convert($finalPriceAmount->getValue())
+                        : null,
                     'adjustments' => []
                 ]
             ],

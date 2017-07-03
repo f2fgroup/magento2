@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\CustomerImportExport\Model\Import;
@@ -370,20 +370,24 @@ class Customer extends AbstractCustomer
             if ($newCustomer && !strlen($value)) {
                 continue;
             }
+
+            $attributeParameters = $this->_attributes[$attributeCode];
+            if ('select' == $attributeParameters['type']) {
+                $value = isset($attributeParameters['options'][strtolower($value)])
+                    ? $attributeParameters['options'][strtolower($value)]
+                    : 0;
+            } elseif ('datetime' == $attributeParameters['type'] && !empty($value)) {
+                $value = (new \DateTime())->setTimestamp(strtotime($value));
+                $value = $value->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT);
+            }
+
             if (!$this->_attributes[$attributeCode]['is_static']) {
                 /** @var $attribute \Magento\Customer\Model\Attribute */
                 $attribute = $this->_customerModel->getAttribute($attributeCode);
                 $backendModel = $attribute->getBackendModel();
-                $attributeParameters = $this->_attributes[$attributeCode];
-
-                if ('select' == $attributeParameters['type']) {
-                    $value = isset($attributeParameters['options'][strtolower($value)])
-                        ? $attributeParameters['options'][strtolower($value)]
-                        : 0;
-                } elseif ('datetime' == $attributeParameters['type']) {
-                    $value = (new \DateTime())->setTimestamp(strtotime($value));
-                    $value = $value->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT);
-                } elseif ($backendModel) {
+                if ($backendModel
+                    && $attribute->getFrontendInput() != 'select'
+                    && $attribute->getFrontendInput() != 'datetime') {
                     $attribute->getBackend()->beforeSave($this->_customerModel->setData($attributeCode, $value));
                     $value = $this->_customerModel->getData($attributeCode);
                 }

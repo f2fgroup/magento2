@@ -2,7 +2,7 @@
 /**
  * Product initialzation helper
  *
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Controller\Adminhtml\Product\Initialization\Helper\Plugin;
@@ -47,6 +47,9 @@ class UpdateConfigurations
         \Magento\Catalog\Model\Product $configurableProduct
     ) {
         $configurations = $this->request->getParam('configurations', []);
+        if ($this->request->getParam('configurations_serialized')) {
+            $configurations = json_decode($this->request->getParam('configurations_serialized'), true);
+        }
         $configurations = $this->variationHandler->duplicateImagesForVariations($configurations);
         foreach ($configurations as $productId => $productData) {
             /** @var \Magento\Catalog\Model\Product $product */

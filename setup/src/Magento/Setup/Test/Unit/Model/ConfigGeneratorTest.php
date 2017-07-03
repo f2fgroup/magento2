@@ -1,6 +1,6 @@
 <?php
 /***
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -8,6 +8,7 @@ namespace Magento\Setup\Test\Unit\Model;
 
 
 use Magento\Framework\Config\ConfigOptionsListConstants;
+use Magento\Framework\App\State;
 
 class ConfigGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -57,5 +58,25 @@ class ConfigGeneratorTest extends \PHPUnit_Framework_TestCase
         ];
         $configData = $this->model->createCacheHostsConfig($data);
         $this->assertEquals($expectedData, $configData->getData()[ConfigOptionsListConstants::CONFIG_PATH_CACHE_HOSTS]);
+    }
+
+    public function testCreateModeConfig()
+    {
+        $this->deploymentConfigMock->expects($this->once())
+            ->method('get')
+            ->with(State::PARAM_MODE)
+            ->willReturn(null);
+        $configData = $this->model->createModeConfig();
+        $this->assertSame(State::MODE_DEFAULT, $configData->getData()[State::PARAM_MODE]);
+    }
+
+    public function testCreateModeConfigIfAlreadySet()
+    {
+        $this->deploymentConfigMock->expects($this->once())
+            ->method('get')
+            ->with(State::PARAM_MODE)
+            ->willReturn(State::MODE_PRODUCTION);
+        $configData = $this->model->createModeConfig();
+        $this->assertSame([], $configData->getData());
     }
 }

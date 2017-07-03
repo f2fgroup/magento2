@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -571,8 +571,13 @@ abstract class AbstractCollection extends \Magento\Framework\Data\Collection\Abs
         parent::_afterLoad();
         foreach ($this->_items as $item) {
             $item->setOrigData();
-            if ($this->_resetItemsDataChanged && ($item instanceof \Magento\Framework\Model\AbstractModel)) {
-                $item->setDataChanges(false);
+
+            if ($item instanceof \Magento\Framework\Model\AbstractModel) {
+                $this->getResource()->unserializeFields($item);
+
+                if ($this->_resetItemsDataChanged) {
+                    $item->setDataChanges(false);
+                }
             }
         }
         $this->_eventManager->dispatch('core_collection_abstract_load_after', ['collection' => $this]);

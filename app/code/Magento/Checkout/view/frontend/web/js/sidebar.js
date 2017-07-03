@@ -1,5 +1,5 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 /*jshint browser:true jquery:true*/
@@ -56,6 +56,8 @@ define([
                     customer = customerData.get('customer');
 
                 if (!customer().firstname && !cart().isGuestCheckoutAllowed) {
+                    // set URL for redirect on successful login/registration. It's postprocessed on backend.
+                    $.cookie('login_redirect', this.options.url.checkout);
                     if (this.options.url.isRedirectRequired) {
                         location.href = this.options.url.loginUrl;
                     } else {

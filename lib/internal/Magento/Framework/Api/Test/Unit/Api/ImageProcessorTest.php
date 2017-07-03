@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -162,6 +162,9 @@ class ImageProcessorTest extends \PHPUnit_Framework_TestCase
         $imageContent->expects($this->any())
             ->method('getName')
             ->willReturn('testFileName');
+        $imageContent->expects($this->any())
+            ->method('getType')
+            ->willReturn('image/jpg');
 
         $imageDataObject = $this->getMockBuilder('Magento\Framework\Api\AttributeValue')
             ->disableOriginalConstructor()
@@ -201,6 +204,9 @@ class ImageProcessorTest extends \PHPUnit_Framework_TestCase
         $imageContent->expects($this->any())
             ->method('getName')
             ->willReturn('testFileName');
+        $imageContent->expects($this->any())
+            ->method('getType')
+            ->willReturn('image/jpg');
 
         $imageDataObject = $this->getMockBuilder('Magento\Framework\Api\AttributeValue')
             ->disableOriginalConstructor()
